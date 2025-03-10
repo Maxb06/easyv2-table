@@ -1,6 +1,6 @@
 {
   "name": "easyv2-table",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple table library for React",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -14,9 +14,9 @@
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
-  "react": ">=18.0.0",
-  "react-dom": ">=18.0.0"
-},
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/react": "^19.0.10",
