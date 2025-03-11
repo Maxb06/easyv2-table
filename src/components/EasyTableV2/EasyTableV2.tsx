@@ -154,19 +154,27 @@ function EasyTableV2<T extends { id: string }>({
       </table>
 
       {pagination && (
-        <div style={{ marginTop: "1rem", display: "flex", gap: "1rem" }}>
-          <button onClick={handlePrevPage} disabled={currentPage <= 1}>
-            Previous
-          </button>
-          <span>
-            Page {currentPage} / {totalPages}
-          </span>
-          <button
-            onClick={handleNextPage}
-            disabled={currentPage >= totalPages}
-          >
-            Next
-          </button>
+        <div style={{ marginTop: "1rem" }}>
+          <div>
+            Showing {sortedData.length === 0 ? 0 : indexOfFirstItem + 1} to{" "}
+            {Math.min(indexOfLastItem, sortedData.length)} of{" "}
+            {sortedData.length} entries
+          </div>
+          
+          <div style={{ marginTop: "0.5rem", display: "flex", gap: "1rem" }}>
+            <button onClick={handlePrevPage} disabled={currentPage <= 1}>
+              Previous
+            </button>
+            <span>
+              Page {currentPage} / {totalPages}
+            </span>
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage >= totalPages}
+            >
+              Next
+            </button>
+          </div>
         </div>
       )}
     </div>
