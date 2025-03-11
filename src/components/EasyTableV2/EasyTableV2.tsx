@@ -30,14 +30,16 @@ function EasyTableV2<T extends { id: string }>({
 
   const requestSort = (key: keyof T) => {
     if (sortConfig.key === key) {
-      setSortConfig((prev) => ({
-        key,
-        direction: prev.direction === "asc" ? "desc" : "asc",
-      }));
+      if (sortConfig.direction === "asc") {
+        setSortConfig({ key, direction: "desc" });
+      } else {
+        setSortConfig({ key: null, direction: "asc" });
+      }
     } else {
       setSortConfig({ key, direction: "asc" });
     }
   };
+  
 
   const sortedData = useMemo(() => {
     if (!sortConfig.key) return data;
