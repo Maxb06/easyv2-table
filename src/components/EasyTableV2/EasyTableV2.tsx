@@ -69,7 +69,6 @@ function EasyTableV2<T extends { id: string }>({
   const indexOfLastItem = currentPage * entries;
   const indexOfFirstItem = indexOfLastItem - entries;
   const totalPages = Math.ceil(sortedData.length / entries);
-
   const currentItems = pagination
     ? sortedData.slice(indexOfFirstItem, indexOfLastItem)
     : sortedData;
