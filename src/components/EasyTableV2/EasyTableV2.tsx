@@ -21,9 +21,7 @@ function EasyTableV2<T extends { id: string }>({
   search = false,
 }: EasyTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(1);
-
   const [searchValue, setSearchValue] = useState("");
-
   const [sortConfig, setSortConfig] = useState<{
     key: keyof T | null;
     direction: "asc" | "desc";
@@ -32,11 +30,16 @@ function EasyTableV2<T extends { id: string }>({
     direction: "asc",
   });
 
+  const [entries, setEntries] = useState(itemsPerPage);
   const filteredData = useMemo(() => {
     if (!search || !searchValue) return data;
+    const lowerSearch = searchValue.toLowerCase();
+
     return data.filter((row) =>
       Object.values(row).some((val) =>
-        String(val).toLowerCase().includes(searchValue.toLowerCase())
+        String(val)
+          .toLowerCase()
+          .startsWith(lowerSearch)
       )
     );
   }, [data, searchValue, search]);
@@ -45,7 +48,7 @@ function EasyTableV2<T extends { id: string }>({
     if (!sortConfig.key) return filteredData;
     const { key, direction } = sortConfig;
 
-    const sorted = [...filteredData].sort((a, b) => {
+    return [...filteredData].sort((a, b) => {
       const aValue = a[key];
       const bValue = b[key];
 
@@ -61,13 +64,11 @@ function EasyTableV2<T extends { id: string }>({
       if (strA > strB) return direction === "asc" ? 1 : -1;
       return 0;
     });
-
-    return sorted;
   }, [filteredData, sortConfig]);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+  const indexOfLastItem = currentPage * entries;
+  const indexOfFirstItem = indexOfLastItem - entries;
+  const totalPages = Math.ceil(sortedData.length / entries);
 
   const currentItems = pagination
     ? sortedData.slice(indexOfFirstItem, indexOfLastItem)
@@ -78,6 +79,7 @@ function EasyTableV2<T extends { id: string }>({
       setCurrentPage((prev) => prev + 1);
     }
   };
+
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
@@ -101,6 +103,11 @@ function EasyTableV2<T extends { id: string }>({
     setCurrentPage(1);
   };
 
+  const handleEntriesChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setEntries(Number(e.target.value));
+    setCurrentPage(1);
+  };
+
   return (
     <div>
       {search && (
@@ -112,6 +119,21 @@ function EasyTableV2<T extends { id: string }>({
               value={searchValue}
               onChange={handleSearchChange}
             />
+          </label>
+        </div>
+      )}
+
+      {pagination && (
+        <div style={{ marginBottom: "1rem" }}>
+          <label>
+            Show{" "}
+            <select value={entries} onChange={handleEntriesChange}>
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>{" "}
+            entries
           </label>
         </div>
       )}
@@ -156,11 +178,18 @@ function EasyTableV2<T extends { id: string }>({
       {pagination && (
         <div style={{ marginTop: "1rem" }}>
           <div>
-            Showing {sortedData.length === 0 ? 0 : indexOfFirstItem + 1} to{" "}
+            Showing{" "}
+            {sortedData.length === 0 ? 0 : indexOfFirstItem + 1} to{" "}
             {Math.min(indexOfLastItem, sortedData.length)} of{" "}
             {sortedData.length} entries
           </div>
-          <div style={{ marginTop: "0.5rem", display: "flex", gap: "1rem" }}>
+          <div
+            style={{
+              marginTop: "0.5rem",
+              display: "flex",
+              gap: "1rem",
+            }}
+          >
             <button onClick={handlePrevPage} disabled={currentPage <= 1}>
               Previous
             </button>
