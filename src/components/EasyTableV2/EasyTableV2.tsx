@@ -160,7 +160,6 @@ function EasyTableV2<T extends { id: string }>({
             {Math.min(indexOfLastItem, sortedData.length)} of{" "}
             {sortedData.length} entries
           </div>
-          
           <div style={{ marginTop: "0.5rem", display: "flex", gap: "1rem" }}>
             <button onClick={handlePrevPage} disabled={currentPage <= 1}>
               Previous
