@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 
 export interface ColumnDef<T> {
   key: keyof T;
@@ -10,6 +10,7 @@ interface EasyTableProps<T> {
   columns: ColumnDef<T>[];
   pagination?: boolean;
   itemsPerPage?: number;
+  search?: boolean;
 }
 
 function EasyTableV2<T extends { id: string }>({
@@ -17,8 +18,11 @@ function EasyTableV2<T extends { id: string }>({
   columns,
   pagination = false,
   itemsPerPage = 10,
+  search = false,
 }: EasyTableProps<T>) {
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [searchValue, setSearchValue] = useState("");
 
   const [sortConfig, setSortConfig] = useState<{
     key: keyof T | null;
@@ -28,30 +32,25 @@ function EasyTableV2<T extends { id: string }>({
     direction: "asc",
   });
 
-  const requestSort = (key: keyof T) => {
-    if (sortConfig.key === key) {
-      if (sortConfig.direction === "asc") {
-        setSortConfig({ key, direction: "desc" });
-      } else {
-        setSortConfig({ key: null, direction: "asc" });
-      }
-    } else {
-      setSortConfig({ key, direction: "asc" });
-    }
-  };
-  
+  const filteredData = useMemo(() => {
+    if (!search || !searchValue) return data;
+    return data.filter((row) =>
+      Object.values(row).some((val) =>
+        String(val).toLowerCase().includes(searchValue.toLowerCase())
+      )
+    );
+  }, [data, searchValue, search]);
 
   const sortedData = useMemo(() => {
-    if (!sortConfig.key) return data;
+    if (!sortConfig.key) return filteredData;
     const { key, direction } = sortConfig;
 
-    const sorted = [...data].sort((a, b) => {
+    const sorted = [...filteredData].sort((a, b) => {
       const aValue = a[key];
       const bValue = b[key];
 
       if (aValue == null) return 1;
       if (bValue == null) return -1;
-
       if (typeof aValue === "number" && typeof bValue === "number") {
         return direction === "asc" ? aValue - bValue : bValue - aValue;
       }
@@ -64,7 +63,7 @@ function EasyTableV2<T extends { id: string }>({
     });
 
     return sorted;
-  }, [data, sortConfig]);
+  }, [filteredData, sortConfig]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -79,15 +78,44 @@ function EasyTableV2<T extends { id: string }>({
       setCurrentPage((prev) => prev + 1);
     }
   };
-
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
     }
   };
 
+  const requestSort = (key: keyof T) => {
+    if (sortConfig.key === key) {
+      if (sortConfig.direction === "asc") {
+        setSortConfig({ key, direction: "desc" });
+      } else {
+        setSortConfig({ key: null, direction: "asc" });
+      }
+    } else {
+      setSortConfig({ key, direction: "asc" });
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+    setCurrentPage(1);
+  };
+
   return (
     <div>
+      {search && (
+        <div style={{ marginBottom: "1rem" }}>
+          <label>
+            Search:{" "}
+            <input
+              type="text"
+              value={searchValue}
+              onChange={handleSearchChange}
+            />
+          </label>
+        </div>
+      )}
+
       <table border={1}>
         <thead>
           <tr>
@@ -102,8 +130,8 @@ function EasyTableV2<T extends { id: string }>({
               return (
                 <th
                   key={String(col.key)}
-                  onClick={() => requestSort(col.key)}
                   style={{ cursor: "pointer" }}
+                  onClick={() => requestSort(col.key)}
                 >
                   {col.label}
                   {directionArrow}
