@@ -17,6 +17,7 @@ A lightweight and customizable React table component with:
 npm install easyv2-table
 
 Quick Start
+
 Minimal Example
 
 import { EasyTableV2, ColumnDef } from "easyv2-table";
@@ -44,6 +45,7 @@ const App = () => {
 export default App;
 
 By default, EasyTableV2 does not enable pagination or search. It simply displays your data in a table.
+
 
 Enabling Features
 
@@ -78,24 +80,25 @@ Sorting
 
 Prop Reference
 
-Prop	        |   Type	          |   Default	  |     Description
-              |                   |             |
-data	        |   T[]	            |    []	      |     The dataset to be displayed
-columns	      |    ColumnDef<T>[]	|    []	      |     Column definitions
-pagination	  |    boolean	      |    false	  |     Enables/disables pagination
-itemsPerPage	|    number	        |    10	      |     Initial number of items per page
-search	      |    boolean	      |    false	  |     Enables/disables the built-in search bar
+| Prop         | Type                 | Default	|         Description                         |
+|------------  |----------------------|---------|---------------------------------------------|
+| data         |   T[]                |  []     |   The dataset to be displayed               | 
+| columns      |   ColumnDef<T>[]     |  []     |   Column definitions                        | 
+| pagination   |   boolean            |  false  |   Enables/disables pagination               | 
+| itemsPerPage |   number             |  10     |   Initial number of items per page          | 
+| search       |   boolean            |  false  |   Enables/disables the built-in search bar  | 
 
+                                                                              
 Where:
-
 export interface ColumnDef<T> {
   key: keyof T;
   label: string;
 }
 
-
 Custom Styles
-easyv2-table comes with built-in styles. You don’t need to import a separate CSS file. If you want to override the default appearance, simply add your own custom CSS rules or inline styles targeting .easyv2-... class names.
+easyv2-table comes with built-in styles. You don’t need to import a separate CSS file. 
+If you want to override the default appearance, 
+simply add your own custom CSS rules or inline styles targeting .easyv2-... class names.
 
 Advanced Usage
 
