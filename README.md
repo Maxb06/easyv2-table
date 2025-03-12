@@ -16,9 +16,9 @@ A lightweight and customizable React table component with:
 ```bash
 npm install easyv2-table
 
-## Quick Start
+📌 Quick Start
 
-### Minimal Example
+🔹 Minimal Example
 
 import { EasyTableV2, ColumnDef } from "easyv2-table";
 
@@ -44,12 +44,12 @@ const App = () => {
 
 export default App;
 
-By default, EasyTableV2 does not enable pagination or search. It simply displays your data in a table.
+💡 By default, EasyTableV2 does not enable pagination or search. It simply displays your data in a table.
 
 
-## Enabling Features
+📌 Enabling Features
 
-### Pagination
+🔹 Pagination
 
 <EasyTableV2 
   data={data} 
@@ -62,7 +62,7 @@ By default, EasyTableV2 does not enable pagination or search. It simply displays
 - itemsPerPage (number): initial page size (defaults to 10).
 - A select drop-down “Show X entries” will appear, letting users choose 10,25,50,100 entries.
 
-## Search
+🔹 Search
 
 <EasyTableV2 
   data={data} 
@@ -71,14 +71,14 @@ By default, EasyTableV2 does not enable pagination or search. It simply displays
   search
 />
 
-search (boolean): enables a search bar that filters rows by startsWith on any column.
+💡 search (boolean): enables a search bar that filters rows by startsWith on any column.
 
-## Sorting
+🔹 Sorting
 - Sorting is enabled by default on all columns.
 - Click on a column header → ASC → DESC → 3rd click → removes sort.
 - If you don’t want sorting, pass columns without sortable or remove the logic from the code if you prefer.
 
-## Prop Reference
+🎯 Prop Reference
 
 | Prop         | Type                 | Default	|         Description                         |
 |------------  |----------------------|---------|---------------------------------------------|
@@ -90,14 +90,15 @@ search (boolean): enables a search bar that filters rows by startsWith on any co
 
 * Each `ColumnDef<T>` can optionally have a `render` function to customize the cell content.
                                                                               
-## Where:
+🔹 Where:
+
 export interface ColumnDef<T> {
   key: keyof T;
   label: string;
   render?: (value: T[keyof T], row: T) => React.ReactNode;
 }
 
-## Render Exemple :
+🔹 Render Exemple :
 
 const columns: ColumnDef<User>[] = [
   { key: "firstName", label: "First Name" },
@@ -114,17 +115,18 @@ const columns: ColumnDef<User>[] = [
   },
 ];
 
-## Custom Styles
+🎨 Custom Styles
+
 easyv2-table comes with built-in styles. You don’t need to import a separate CSS file. 
 If you want to override the default appearance, 
 simply add your own custom CSS rules or inline styles targeting .easyv2-... class names.
 
-## Advanced Usage
+🔥 Advanced Usage
 
 - Edit your data in real-time, pass new props, and EasyTableV2 will update automatically.
 - Three-click sort: 1st = ascending, 2nd = descending, 3rd = remove sort.
 - Filtering with search uses startsWith, case-insensitive.
 - Pagination handles the data after filtering and sorting, so all steps are chained logically.
 
-## License
+📜 License
 MIT © 2025 [Maxb06 - Maxime Brunet]
