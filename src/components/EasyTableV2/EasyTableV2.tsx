@@ -3,6 +3,7 @@ import React, { useState, useMemo, useEffect } from "react";
 export interface ColumnDef<T> {
   key: keyof T;
   label: string;
+  render?: (value: T[keyof T], row: T) => React.ReactNode;
 }
 
 interface EasyTableProps<T> {
@@ -212,9 +213,16 @@ function EasyTableV2<T extends { id: string }>({
         <tbody>
           {currentItems.map((item) => (
             <tr key={item.id}>
-              {columns.map((col) => (
-                <td key={String(col.key)}>{String(item[col.key])}</td>
-              ))}
+              {columns.map((col) => {
+                const cellValue = item[col.key];
+                return (
+                  <td key={String(col.key)}>
+                    {col.render
+                      ? col.render(cellValue, item)
+                      : String(cellValue ?? "")}
+                  </td>
+                );
+              })}
             </tr>
           ))}
         </tbody>
