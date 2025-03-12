@@ -167,15 +167,6 @@ function EasyTableV2<T extends { id: string }>({
   return (
     <div className="easyv2-container">
       <div className="easyv2-header">
-        {search && (
-          <div className="easyv2-search">
-            <label>
-              Search:{" "}
-              <input type="text" value={searchValue} onChange={handleSearchChange} />
-            </label>
-          </div>
-        )}
-
         {pagination && (
           <div className="easyv2-show">
             <label>
@@ -187,6 +178,15 @@ function EasyTableV2<T extends { id: string }>({
                 <option value={100}>100</option>
               </select>{" "}
               entries
+            </label>
+          </div>
+        )}
+        
+        {search && (
+          <div className="easyv2-search">
+            <label>
+              Search:{" "}
+              <input type="text" value={searchValue} onChange={handleSearchChange} />
             </label>
           </div>
         )}
