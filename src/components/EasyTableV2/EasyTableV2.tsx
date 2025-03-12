@@ -21,7 +21,8 @@ const defaultStyles = `
   background: #f9f9f9;
 }
 .easyv2-header {
-  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
 }
 .easyv2-search {
   margin-bottom: 1rem;
@@ -47,7 +48,8 @@ const defaultStyles = `
   background: #ddd;
 }
 .easyv2-footer {
-  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
 }
 .easyv2-pagination {
   margin-top: 0.5rem;
@@ -164,29 +166,31 @@ function EasyTableV2<T extends { id: string }>({
 
   return (
     <div className="easyv2-container">
-      {search && (
-        <div className="easyv2-search">
-          <label>
-            Search:{" "}
-            <input type="text" value={searchValue} onChange={handleSearchChange} />
-          </label>
-        </div>
-      )}
+      <div className="easyv2-header">
+        {search && (
+          <div className="easyv2-search">
+            <label>
+              Search:{" "}
+              <input type="text" value={searchValue} onChange={handleSearchChange} />
+            </label>
+          </div>
+        )}
 
-      {pagination && (
-        <div className="easyv2-header">
-          <label>
-            Show{" "}
-            <select value={entries} onChange={handleEntriesChange}>
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-            </select>{" "}
-            entries
-          </label>
-        </div>
-      )}
+        {pagination && (
+          <div className="easyv2-show">
+            <label>
+              Show{" "}
+              <select value={entries} onChange={handleEntriesChange}>
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>{" "}
+              entries
+            </label>
+          </div>
+        )}
+      </div>
 
       <table className="easyv2-table">
         <thead>
@@ -230,7 +234,7 @@ function EasyTableV2<T extends { id: string }>({
 
       {pagination && (
         <div className="easyv2-footer">
-          <div>
+          <div className="easyv2-info">
             Showing{" "}
             {sortedData.length === 0 ? 0 : indexOfFirstItem + 1} to{" "}
             {Math.min(indexOfLastItem, sortedData.length)} of{" "}
