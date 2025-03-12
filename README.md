@@ -1,54 +1,108 @@
-# React + TypeScript + Vite
+# easyv2-table
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![npm version](https://img.shields.io/npm/v/easyv2-table.svg)](https://www.npmjs.com/package/easyv2-table)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Currently, two official plugins are available:
+A lightweight and customizable React table component with:
+- **Sorting** (ASC, DESC, and 3rd click to remove sort)
+- **Pagination** (+ “Show X entries”)
+- **Search** (optionally filters rows, using `startsWith`)
+- **“Showing X to X of X entries”** display
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## Installation
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```bash
+npm install easyv2-table
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Quick Start
+Minimal Example
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+import { EasyTableV2, ColumnDef } from "easyv2-table";
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+type Person = {
+  id: string;
+  firstName: string;
+  lastName: string;
+};
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+const data: Person[] = [
+  { id: "1", firstName: "Alice", lastName: "Smith" },
+  { id: "2", firstName: "Bob", lastName: "Johnson" },
+];
+
+const columns: ColumnDef<Person>[] = [
+  { key: "firstName", label: "First Name" },
+  { key: "lastName", label: "Last Name" },
+];
+
+const App = () => {
+  return <EasyTableV2 data={data} columns={columns} />;
+};
+
+export default App;
+
+By default, EasyTableV2 does not enable pagination or search. It simply displays your data in a table.
+
+Enabling Features
+
+Pagination
+
+<EasyTableV2 
+  data={data} 
+  columns={columns} 
+  pagination 
+  itemsPerPage={10}
+/>
+
+- pagination (boolean): toggles pagination on/off.
+- itemsPerPage (number): initial page size (defaults to 10).
+- A select drop-down “Show X entries” will appear, letting users choose 5,10,25,50,100 entries.
+
+Search
+
+<EasyTableV2 
+  data={data} 
+  columns={columns}
+  pagination
+  search
+/>
+
+search (boolean): enables a search bar that filters rows by startsWith on any column.
+
+Sorting
+- Sorting is enabled by default on all columns.
+- Click on a column header → ASC → DESC → 3rd click → removes sort.
+- If you don’t want sorting, pass columns without sortable or remove the logic from the code if you prefer.
+
+Prop Reference
+
+Prop	        |   Type	          |   Default	  |     Description
+              |                   |             |
+data	        |   T[]	            |    []	      |     The dataset to be displayed
+columns	      |    ColumnDef<T>[]	|    []	      |     Column definitions
+pagination	  |    boolean	      |    false	  |     Enables/disables pagination
+itemsPerPage	|    number	        |    10	      |     Initial number of items per page
+search	      |    boolean	      |    false	  |     Enables/disables the built-in search bar
+
+Where:
+
+export interface ColumnDef<T> {
+  key: keyof T;
+  label: string;
+}
+
+
+Custom Styles
+easyv2-table comes with built-in styles. You don’t need to import a separate CSS file. If you want to override the default appearance, simply add your own custom CSS rules or inline styles targeting .easyv2-... class names.
+
+Advanced Usage
+
+- Edit your data in real-time, pass new props, and EasyTableV2 will update automatically.
+- Three-click sort: 1st = ascending, 2nd = descending, 3rd = remove sort.
+- Filtering with search uses startsWith, case-insensitive.
+- Pagination handles the data after filtering and sorting, so all steps are chained logically.
+
+License
+MIT © 2025 [Maxb06 - Maxime Brunet]
