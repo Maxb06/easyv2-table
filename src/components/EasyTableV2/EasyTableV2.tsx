@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 
 export interface ColumnDef<T> {
   key: keyof T;
@@ -12,6 +12,49 @@ interface EasyTableProps<T> {
   itemsPerPage?: number;
   search?: boolean;
 }
+const defaultStyles = `
+.easyv2-container {
+  margin: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+.easyv2-header {
+  margin-bottom: 1rem;
+}
+.easyv2-search {
+  margin-bottom: 1rem;
+}
+.easyv2-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.easyv2-table th, .easyv2-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+.easyv2-table th {
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+}
+.easyv2-table tr:nth-child(even) {
+  background: #f2f2f2;
+}
+.easyv2-table tr:hover {
+  background: #ddd;
+}
+.easyv2-footer {
+  margin-top: 1rem;
+}
+.easyv2-pagination {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+`;
 
 function EasyTableV2<T extends { id: string }>({
   data,
@@ -20,8 +63,19 @@ function EasyTableV2<T extends { id: string }>({
   itemsPerPage = 10,
   search = false,
 }: EasyTableProps<T>) {
+  useEffect(() => {
+    const styleEl = document.createElement("style");
+    styleEl.textContent = defaultStyles;
+    document.head.appendChild(styleEl);
+
+    return () => {
+      document.head.removeChild(styleEl);
+    };
+  }, []);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState("");
+
   const [sortConfig, setSortConfig] = useState<{
     key: keyof T | null;
     direction: "asc" | "desc";
@@ -29,8 +83,8 @@ function EasyTableV2<T extends { id: string }>({
     key: null,
     direction: "asc",
   });
-
   const [entries, setEntries] = useState(itemsPerPage);
+
   const filteredData = useMemo(() => {
     if (!search || !searchValue) return data;
     const lowerSearch = searchValue.toLowerCase();
@@ -69,6 +123,7 @@ function EasyTableV2<T extends { id: string }>({
   const indexOfLastItem = currentPage * entries;
   const indexOfFirstItem = indexOfLastItem - entries;
   const totalPages = Math.ceil(sortedData.length / entries);
+
   const currentItems = pagination
     ? sortedData.slice(indexOfFirstItem, indexOfLastItem)
     : sortedData;
@@ -78,7 +133,6 @@ function EasyTableV2<T extends { id: string }>({
       setCurrentPage((prev) => prev + 1);
     }
   };
-
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prev) => prev - 1);
@@ -108,22 +162,18 @@ function EasyTableV2<T extends { id: string }>({
   };
 
   return (
-    <div>
+    <div className="easyv2-container">
       {search && (
-        <div style={{ marginBottom: "1rem" }}>
+        <div className="easyv2-search">
           <label>
             Search:{" "}
-            <input
-              type="text"
-              value={searchValue}
-              onChange={handleSearchChange}
-            />
+            <input type="text" value={searchValue} onChange={handleSearchChange} />
           </label>
         </div>
       )}
 
       {pagination && (
-        <div style={{ marginBottom: "1rem" }}>
+        <div className="easyv2-header">
           <label>
             Show{" "}
             <select value={entries} onChange={handleEntriesChange}>
@@ -137,7 +187,7 @@ function EasyTableV2<T extends { id: string }>({
         </div>
       )}
 
-      <table border={1}>
+      <table className="easyv2-table">
         <thead>
           <tr>
             {columns.map((col) => {
@@ -147,11 +197,9 @@ function EasyTableV2<T extends { id: string }>({
                   ? " ▲"
                   : " ▼"
                 : "";
-
               return (
                 <th
                   key={String(col.key)}
-                  style={{ cursor: "pointer" }}
                   onClick={() => requestSort(col.key)}
                 >
                   {col.label}
@@ -165,9 +213,7 @@ function EasyTableV2<T extends { id: string }>({
           {currentItems.map((item) => (
             <tr key={item.id}>
               {columns.map((col) => (
-                <td key={String(col.key)}>
-                  {String(item[col.key])}
-                </td>
+                <td key={String(col.key)}>{String(item[col.key])}</td>
               ))}
             </tr>
           ))}
@@ -175,30 +221,22 @@ function EasyTableV2<T extends { id: string }>({
       </table>
 
       {pagination && (
-        <div style={{ marginTop: "1rem" }}>
+        <div className="easyv2-footer">
           <div>
             Showing{" "}
             {sortedData.length === 0 ? 0 : indexOfFirstItem + 1} to{" "}
             {Math.min(indexOfLastItem, sortedData.length)} of{" "}
             {sortedData.length} entries
           </div>
-          <div
-            style={{
-              marginTop: "0.5rem",
-              display: "flex",
-              gap: "1rem",
-            }}
-          >
+
+          <div className="easyv2-pagination">
             <button onClick={handlePrevPage} disabled={currentPage <= 1}>
               Previous
             </button>
             <span>
               Page {currentPage} / {totalPages}
             </span>
-            <button
-              onClick={handleNextPage}
-              disabled={currentPage >= totalPages}
-            >
+            <button onClick={handleNextPage} disabled={currentPage >= totalPages}>
               Next
             </button>
           </div>
