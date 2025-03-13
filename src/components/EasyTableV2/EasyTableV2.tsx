@@ -164,6 +164,34 @@ function EasyTableV2<T extends { id: string }>({
     setCurrentPage(1);
   };
 
+  function getPagesToDisplay(currentPage: number, totalPages: number): (number | '...')[] {
+    const pages: (number | '...')[] = [];
+
+    pages.push(1);
+    const left = Math.max(currentPage - 1, 2);
+    const right = Math.min(currentPage + 1, totalPages - 1);
+
+    if (left > 2) {
+      pages.push('...');
+    }
+
+    for (let p = left; p <= right; p++) {
+      pages.push(p);
+    }
+
+    if (right < totalPages - 1) {
+      pages.push('...');
+    }
+
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
+    return pages;
+  }
+
+  const pages = getPagesToDisplay(currentPage, totalPages);
+
   return (
     <div className="easyv2-container">
       <div className="easyv2-header">
@@ -181,7 +209,7 @@ function EasyTableV2<T extends { id: string }>({
             </label>
           </div>
         )}
-        
+
         {search && (
           <div className="easyv2-search">
             <label>
@@ -240,14 +268,28 @@ function EasyTableV2<T extends { id: string }>({
             {Math.min(indexOfLastItem, sortedData.length)} of{" "}
             {sortedData.length} entries
           </div>
-
+          
           <div className="easyv2-pagination">
             <button onClick={handlePrevPage} disabled={currentPage <= 1}>
               Previous
             </button>
-            <span>
-              Page {currentPage} / {totalPages}
-            </span>
+
+            {pages.map((p, index) =>
+              p === '...'
+                ? (
+                  <span key={`dots-${index}`} className="easyv2-dots">…</span>
+                ) : (
+                  <button
+                    key={p}
+                    className={`easyv2-page-btn ${currentPage === p ? 'easyv2-page-btn-active' : ''
+                      }`}
+                    onClick={() => setCurrentPage(p as number)}
+                  >
+                    {p}
+                  </button>
+                )
+            )}
+
             <button onClick={handleNextPage} disabled={currentPage >= totalPages}>
               Next
             </button>
