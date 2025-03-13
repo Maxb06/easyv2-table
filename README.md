@@ -49,6 +49,8 @@ export default App;
 
 💡 By default, EasyTableV2 does not enable pagination or search. It simply displays your data in a table.
 
+```
+
 ---
 
 ## 📌 Enabling Features
