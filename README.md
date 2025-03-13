@@ -68,6 +68,9 @@ export default App;
 - itemsPerPage (number): initial page size (defaults to 10).
 - A select drop-down “Show X entries” will appear, letting users choose 10,25,50,100 entries.
 
+💡 The component shows numeric pagination with ellipses if there are many pages. 
+    For example, if you’re on page 5 out of 12, it displays 1 … 4 5 6 … 12. »
+
 ### 🔹 Search
 
 <EasyTableV2 
