@@ -46,10 +46,10 @@ const App = () => {
 };
 
 export default App;
-
-💡 By default, EasyTableV2 does not enable pagination or search. It simply displays your data in a table.
-
 ```
+---
+
+💡 By default, EasyTableV2 doesn't enable pagination or search. It simply displays your data in a table.
 
 ---
 
@@ -96,7 +96,7 @@ export default App;
 | itemsPerPage |   number             |  10     |   Initial number of items per page          | 
 | search       |   boolean            |  false  |   Enables/disables the built-in search bar  | 
 
-* Each `ColumnDef<T>` can optionally have a `render` function to customize the cell content.
+*Each `ColumnDef<T>` can optionally have a `render` function to customize the cell content.
 
 ---
                                                                               
