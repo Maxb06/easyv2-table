@@ -38,7 +38,7 @@ const defaultStyles = `
   text-align: left;
 }
 .easyv2-table th {
-  background: #007bff;
+  background:#0072ec;
   color: white;
   cursor: pointer;
 }
