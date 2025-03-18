@@ -1,6 +1,6 @@
 {
   "name": "easyv2-table",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "A simple table library for React",
   "main": "dist/index.js",
   "module": "dist/index.js",
