@@ -146,6 +146,8 @@ simply add your own custom CSS rules or inline styles targeting .easyv2-... clas
 - Filtering with search uses startsWith, case-insensitive.
 - Pagination handles the data after filtering and sorting, so all steps are chained logically.
 
+---
+
 ## 🔥 Live Demo
 
 Check out the [live demo on Vercel](https://my-test-project-delta.vercel.app//) 
