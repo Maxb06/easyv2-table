@@ -90,13 +90,16 @@ function EasyTableV2<T extends { id: string }>({
   const filteredData = useMemo(() => {
     if (!search || !searchValue) return data;
     const lowerSearch = searchValue.toLowerCase();
-
+  
     return data.filter((row) =>
-      Object.values(row).some((val) =>
-        String(val).toLowerCase().startsWith(lowerSearch)
-      )
+      Object.entries(row)
+        .filter(([k]) => k !== "id")
+        .some(([, val]) =>
+          String(val).toLowerCase().startsWith(lowerSearch)
+        )
     );
   }, [data, searchValue, search]);
+  
 
   const sortedData = useMemo(() => {
     if (!sortConfig.key) return filteredData;

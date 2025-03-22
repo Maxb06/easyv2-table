@@ -139,7 +139,7 @@ simply add your own custom CSS rules or inline styles targeting .easyv2-... clas
 
 ---
 
-## 🔥 Advanced Usage
+## 📌 Advanced Usage
 
 - Edit your data in real-time, pass new props, and EasyTableV2 will update automatically.
 - Three-click sort: 1st = ascending, 2nd = descending, 3rd = remove sort.
@@ -154,6 +154,19 @@ Check out the [live demo on Vercel](https://my-test-project-delta.vercel.app//)
 to see the table in action with sorting, pagination, etc.
 
 ![Easyv2 table screenshot](./docs/easyv2-demo.png)
+
+---
+
+## 📌 Changelog
+
+**v1.1.0**:
+- Refined the search logic to exclude the `id` field 
+- Ensures no conflicts when `id` contains user-typed strings
+- Generally improved stability
+
+**Coming in v1.2.0**:
+- Deleting rows (onDelete) feature
+- Additional table enhancements
 
 ---
 
