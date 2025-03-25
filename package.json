@@ -2,6 +2,7 @@
   "name": "easyv2-table",
   "version": "1.1.0",
   "description": "A simple table library for React",
+  "author": "Maxb06 <maximb84@gmail.com>", 
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
